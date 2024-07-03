@@ -1,0 +1,2482 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "InVirtus API",
+        "description": "InVirtus API provides endpoints for integration services",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://cloud.invirtus.io"
+        }
+    ],
+    "paths": {
+        "/api/v1/public/asset-tag-links": {
+            "post": {
+                "tags": [
+                    "Asset Tag Links"
+                ],
+                "summary": "Link an asset with a tag.",
+                "description": "<p>Use to link an asset with a tag.</p>\n<em>Previous link for tag and/or asset is automatically removed</em>",
+                "operationId": "post_app_public_asset_tag_links_add",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AssetBeaconTagLinkDTO"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "The created asset tag link",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AssetBeaconTagLink"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "description": "Error"
+                    }
+                }
+            }
+        },
+        "/api/v1/public/export/asset-journeys": {
+            "post": {
+                "tags": [
+                    "Exports"
+                ],
+                "summary": "Retrieve the asset journey history.",
+                "description": "<p>Use to get the asset journey history.</p>\n<p><em>Note: Response limited to 25000 lines</em></p>",
+                "operationId": "post_api_public_export_asset_journeys",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "startDate": {
+                                        "description": "Export start date in ISO 8601 format",
+                                        "type": "string",
+                                        "examples": ["2021-10-01T00:00:00+0000"]
+                                    },
+                                    "endDate": {
+                                        "description": "Export end date in ISO 8601 format",
+                                        "type": "string",
+                                        "examples": ["2021-11-01T00:00:00+0000"]
+                                    },
+                                    "assetGroupNames": {
+                                        "description": "Name of the asset groups to include in the export, incompatible with assetNames parameter",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "examples": [
+                                            "GRP_1",
+                                            "GRP_2"
+                                        ]
+                                    },
+                                    "assetNames": {
+                                        "description": "Name of the assets to include in the export, incompatible with assetGroupNames parameter",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "examples": [
+                                            "TRACKER_1",
+                                            "TRACKER_2"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Collection of items",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "uuid": {
+                                                "description": "Asset uuid",
+                                                "type": "string",
+                                                "examples": ["5135c186-e9d8-4072-94a7-323796122011"]
+                                            },
+                                            "name": {
+                                                "description": "Asset name",
+                                                "type": "string",
+                                                "examples": ["assetName1"]
+                                            },
+                                            "assetsGroups": {
+                                                "type": "array",
+                                                "items": {
+                                                    "properties": {
+                                                        "name": {
+                                                            "description": "Asset group name",
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "examples": [
+                                                    {
+                                                        "name": "Group1"
+                                                    },
+                                                    {
+                                                        "name": "Group2"
+                                                    }
+                                                ]
+                                            },
+                                            "journeys": {
+                                                "type": "array",
+                                                "items": {
+                                                    "properties": {
+                                                        "startDate": {
+                                                            "description": "Journey start date in ISO 8601 format",
+                                                            "type": "string"
+                                                        },
+                                                        "endDate": {
+                                                            "description": "Journey end date in ISO 8601 format",
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error"
+                    },
+                    "403": {
+                        "description": "Access denied"
+                    }
+                }
+            }
+        },
+        "/api/v1/public/export/asset-locations": {
+            "post": {
+                "tags": [
+                    "Exports"
+                ],
+                "summary": "Retrieve the asset location history information.",
+                "description": "<p>Use to get the asset location history.</p>\n<p><em>Note: Response limited to 25000 lines</em></p>",
+                "operationId": "post_api_public_export_asset_locations",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "startDate": {
+                                        "description": "Export start date in ISO 8601 format",
+                                        "type": "string",
+                                        "examples": ["2021-10-01T00:00:00+0000"]
+                                    },
+                                    "endDate": {
+                                        "description": "Export end date in ISO 8601 format",
+                                        "type": "string",
+                                        "examples": ["2021-10-01T00:00:00+0000"]
+                                    },
+                                    "assetGroupNames": {
+                                        "description": "Name of the asset groups to include in the export, incompatible with assetNames parameter",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "examples": [
+                                            "GRP_1",
+                                            "GRP_2"
+                                        ]
+                                    },
+                                    "assetNames": {
+                                        "description": "Name of the assets to include in the export, incompatible with assetGroupNames parameter",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "examples": [
+                                            "TRACKER_1",
+                                            "TRACKER_2"
+                                        ]
+                                    },
+                                    "useReceivingTimeIndex": {
+                                        "description": "If false, the period applies to the GPS fix date. If true, the period applies to the date of receipt",
+                                        "type": "boolean",
+                                        "default": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Collection of items",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "asset": {
+                                                "properties": {
+                                                    "name": {
+                                                        "description": "Asset name",
+                                                        "type": "string",
+                                                        "examples": ["TRACKER_1"]
+                                                    },
+                                                    "created_at": {
+                                                        "description": "Asset creation date",
+                                                        "type": "string",
+                                                        "examples": ["2022-11-22T17:23:23+01:00"]
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "longitude": {
+                                                "description": "Longitude",
+                                                "type": "number",
+                                                "examples": ["-1.765432"]
+                                            },
+                                            "latitude": {
+                                                "description": "Latitude",
+                                                "type": "number",
+                                                "examples": ["48.123456"]
+                                            },
+                                            "zone": {
+                                                "description": "Monitored area (if applicable)",
+                                                "type": "string",
+                                                "examples": [null]
+                                            },
+                                            "localized_at": {
+                                                "description": "Location date",
+                                                "type": "string",
+                                                "examples": ["2021-10-24T11:40:45+00:00"]
+                                            },
+                                            "recovered_at": {
+                                                "description": "Recovery date (if location was recovered)",
+                                                "type": "string",
+                                                "examples": ["2021-12-03T15:16:43+00:00"]
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error"
+                    },
+                    "403": {
+                        "description": "Access denied"
+                    }
+                }
+            }
+        },
+        "/api/v1/public/export/assets": {
+            "get": {
+                "tags": [
+                    "Exports"
+                ],
+                "summary": "Retrieve a list of assets for current customer.",
+                "description": "<p>Use to get the list of active assets for your account.</p>\n<p><em>Note: Response limited to 25000 lines</em></p>",
+                "operationId": "get_api_public_export_assets",
+                "responses": {
+                    "200": {
+                        "description": "Collection of items",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "uuid": {
+                                                "description": "Asset name",
+                                                "type": "string",
+                                                "examples": ["5135c186-e9d8-4072-94a7-323796122011"]
+                                            },
+                                            "name": {
+                                                "description": "Asset creation date",
+                                                "type": "string",
+                                                "examples": ["assetName1"]
+                                            },
+                                            "assetsGroups": {
+                                                "type": "array",
+                                                "items": {
+                                                    "properties": {
+                                                        "name": {
+                                                            "description": "Asset name",
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "examples": [
+                                                    {
+                                                        "name": "Group1"
+                                                    },
+                                                    {
+                                                        "name": "Group2"
+                                                    }
+                                                ]
+                                            },
+                                            "createdAt": {
+                                                "description": "Asset creation date",
+                                                "type": "string",
+                                                "examples": ["2022-08-26T00:00:00+00:00"]
+                                            },
+                                            "barcode": {
+                                                "description": "Asset barcode",
+                                                "type": "string",
+                                                "examples": [null]
+                                            },
+                                            "lastLocatedAt": {
+                                                "description": "Last asset location date",
+                                                "type": "string",
+                                                "examples": ["2022-10-26T00:00:00+00:00"]
+                                            },
+                                            "lastZone": {
+                                                "description": "Last zone name where the asset was localised",
+                                                "type": "string",
+                                                "examples": ["Zone1"]
+                                            },
+                                            "currentZone": {
+                                                "description": "Name of the current zone of the asset, can be null if asset is outside a zone",
+                                                "type": "string",
+                                                "examples": ["Zone1"]
+                                            },
+                                            "lastLatitude": {
+                                                "description": "Latitude of the last known asset location",
+                                                "type": "number",
+                                                "examples": [null] 
+                                            },
+                                            "lastLongitude": {
+                                                "description": "Longitude of the last known asset location",
+                                                "type": "number",
+                                                "examples": [null]
+                                            },
+                                            "lastLifeSignAt": {
+                                                "description": "Last life sign date (GPS, GPS NO FIX or BATTERY type)",
+                                                "type": "string",
+                                                "examples": ["2022-10-26T12:00:00+00:00"]
+                                            },
+                                            "lastLifeSignType": {
+                                                "description": "GPS, GPS_NO_FIX or BATTERY",
+                                                "type": "string",
+                                                "examples": ["BATTERY"]
+                                            },
+                                            "batteryLevel": {
+                                                "description": "low, medium or high",
+                                                "type": "string",
+                                                "examples": ["high"]
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error"
+                    },
+                    "403": {
+                        "description": "Access denied"
+                    }
+                }
+            }
+        },
+        "/api/v1/public/assets/fields": {
+            "get": {
+                "tags": [
+                    "Assets"
+                ],
+                "summary": "Retrieve available fields to use in search filters.",
+                "operationId": "get_app_public_assets_fields",
+                "responses": {
+                    "200": {
+                        "description": "Collection of items",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Column"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/public/assets/search": {
+            "post": {
+                "tags": [
+                    "Assets"
+                ],
+                "summary": "Retrieve a list of assets for current customer.",
+                "description": "<p>Use to get the list of active assets for your account.</p>\n<p><em>Note: Response limited to 10000 lines</em></p>",
+                "operationId": "post_app_public_assets_list_search",
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SearchDTO"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Collection of items",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Asset"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error"
+                    },
+                    "403": {
+                        "description": "Access denied"
+                    }
+                }
+            }
+        },
+        "/api/v1/public/assets/{UUID}": {
+            "get": {
+                "tags": [
+                    "Assets"
+                ],
+                "summary": "Retrieve an asset by its UUID.",
+                "operationId": "get_app_public_assets_get_from_uuid",
+                "parameters": [
+                    {
+                        "name": "UUID",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Item",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Asset"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error"
+                    },
+                    "403": {
+                        "description": "Access denied"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Assets"
+                ],
+                "summary": "Archive an asset for current customer.",
+                "description": "<p>Use to archive an asset on your account.</p>",
+                "operationId": "delete_app_public_assets_delete",
+                "parameters": [
+                    {
+                        "name": "UUID",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Error"
+                    },
+                    "403": {
+                        "description": "Access denied"
+                    },
+                    "404": {
+                        "description": "Asset doesn't exist"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Assets"
+                ],
+                "summary": "Update an asset for current customer.",
+                "description": "<p>Use to update an existing asset on your account.</p>",
+                "operationId": "patch_app_public_assets_update",
+                "parameters": [
+                    {
+                        "name": "UUID",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Asset2"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "The updated asset",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Asset"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied"
+                    },
+                    "404": {
+                        "description": "Asset doesn't exist"
+                    },
+                    "422": {
+                        "description": "Error"
+                    }
+                }
+            }
+        },
+        "/api/v1/public/assets": {
+            "post": {
+                "tags": [
+                    "Assets"
+                ],
+                "summary": "Add an asset for current customer.",
+                "description": "<p>Use to create a new asset on your account.</p>",
+                "operationId": "post_app_public_assets_add",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Asset3"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "The created asset",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Asset"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "description": "Error"
+                    }
+                }
+            }
+        },
+        "/api/v1/public/asset-groups/fields": {
+            "get": {
+                "tags": [
+                    "Asset groups"
+                ],
+                "summary": "Retrieve available fields to use in search filters.",
+                "operationId": "get_app_public_asset_groups_fields",
+                "responses": {
+                    "200": {
+                        "description": "Collection of items",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Column"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/public/asset-groups": {
+            "get": {
+                "tags": [
+                    "Asset groups"
+                ],
+                "summary": "Retrieve a list of asset groups for current customer.",
+                "description": "<p>Kept for backwards compatibility. Use <a href=\"#operations-Asset_groups-post_app_public_asset_groups_list_search\">POST /v1/public/asset-groups/search</a></p>\n<br/>\n<p>Use to get the list of active asset groups for your account.</p>\n<p><em>Note: Response limited to 10000 lines</em></p>",
+                "operationId": "get_app_public_asset_groups_list",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10000,
+                            "maximum": 25000,
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 0,
+                            "minimum": 0
+                        }
+                    },
+                    {
+                        "name": "order_by",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/components/schemas/OrderBy"
+                        }
+                    },
+                    {
+                        "name": "sort_by",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": [
+                                "string",
+                                "null"
+                            ],
+                            "default": null
+                        }
+                    },
+                    {
+                        "name": "filters[]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/FilterDTO"
+                            },
+                            "default": []
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Collection of items",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AssetGroup"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error"
+                    },
+                    "403": {
+                        "description": "Access denied"
+                    }
+                },
+                "deprecated": true
+            },
+            "post": {
+                "tags": [
+                    "Asset groups"
+                ],
+                "summary": "Add an asset group for current customer.",
+                "description": "<p>Use to create a new asset group on your account.</p>",
+                "operationId": "post_app_public_asset_groups_add",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AssetGroup2"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "The created asset group",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AssetGroup"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "description": "Error"
+                    }
+                }
+            }
+        },
+        "/api/v1/public/asset-groups/search": {
+            "post": {
+                "tags": [
+                    "Asset groups"
+                ],
+                "summary": "Retrieve a list of asset groups for current customer.",
+                "description": "<p>Use to get the list of active asset groups for your account.</p>\n<p><em>Note: Response limited to 10000 lines</em></p>.",
+                "operationId": "post_app_public_asset_groups_list_search",
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SearchDTO"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Collection of items",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AssetGroup"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error"
+                    },
+                    "403": {
+                        "description": "Access denied"
+                    }
+                }
+            }
+        },
+        "/api/v1/public/asset-groups/{UUID}": {
+            "delete": {
+                "tags": [
+                    "Asset groups"
+                ],
+                "summary": "Delete an asset group for current customer.",
+                "description": "<p>Use to delete an asset group on your account.</p>",
+                "operationId": "delete_app_public_asset_groups_delete",
+                "parameters": [
+                    {
+                        "name": "UUID",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Error"
+                    },
+                    "403": {
+                        "description": "Access denied"
+                    },
+                    "404": {
+                        "description": "Asset group doesn't exist"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Asset groups"
+                ],
+                "summary": "Update an asset group for current customer.",
+                "description": "<p>Use to update an existing asset group on your account.</p>",
+                "operationId": "patch_app_public_asset_groups_update",
+                "parameters": [
+                    {
+                        "name": "UUID",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AssetGroup3"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "The updated asset group",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AssetGroup"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied"
+                    },
+                    "404": {
+                        "description": "Asset group doesn't exist"
+                    },
+                    "422": {
+                        "description": "Error"
+                    }
+                }
+            }
+        },
+        "/api/v1/public/image-overlays": {
+            "get": {
+                "tags": [
+                    "Image Overlays"
+                ],
+                "summary": "Retrieve a list of image overlays for current customer.",
+                "operationId": "get_app_public_image_overlays_list",
+                "responses": {
+                    "200": {
+                        "description": "Collection of items",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ImageOverlay"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error"
+                    },
+                    "403": {
+                        "description": "Access denied"
+                    }
+                }
+            }
+        },
+        "/api/v1/public/tags/fields": {
+            "get": {
+                "tags": [
+                    "Tags"
+                ],
+                "summary": "Retrieve available fields to use in search filters.",
+                "operationId": "get_app_public_tags_fields",
+                "responses": {
+                    "200": {
+                        "description": "Collection of items",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Column"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/public/tags/search": {
+            "post": {
+                "tags": [
+                    "Tags"
+                ],
+                "summary": "Retrieve a list of tags for current customer.",
+                "description": "<p>Use to get the list of active tags for your account.</p>\n<p><em>Note: Response limited to 10000 lines</em></p>",
+                "operationId": "post_app_public_tags_list_search",
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SearchDTO"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Collection of items",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/BeaconTag"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error"
+                    },
+                    "403": {
+                        "description": "Access denied"
+                    }
+                }
+            }
+        },
+        "/api/v1/public/tags/mac/{macAddress}": {
+            "get": {
+                "tags": [
+                    "Tags"
+                ],
+                "summary": "Retrieve a tag by its Mac Address.",
+                "operationId": "get_app_public_tags_get_from_mac_address",
+                "parameters": [
+                    {
+                        "name": "macAddress",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Item",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BeaconTag"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error"
+                    },
+                    "403": {
+                        "description": "Access denied"
+                    }
+                }
+            }
+        },
+        "/api/v1/public/users/{UUID}": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Retrieve a user by his UUID.",
+                "operationId": "get_app_public_users_get_from_uuid",
+                "parameters": [
+                    {
+                        "name": "UUID",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Item",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error"
+                    },
+                    "403": {
+                        "description": "Access denied"
+                    }
+                }
+            }
+        },
+        "/api/v1/public/zones": {
+            "get": {
+                "tags": [
+                    "Zones"
+                ],
+                "summary": "Retrieve a list of zones for current customer.",
+                "operationId": "get_app_public_monitored_areas_list",
+                "responses": {
+                    "200": {
+                        "description": "Collection of items",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/MonitoredArea"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error"
+                    },
+                    "403": {
+                        "description": "Access denied"
+                    }
+                }
+            }
+        },
+        "/api/v1/public/zones/{UUID}": {
+            "get": {
+                "tags": [
+                    "Zones"
+                ],
+                "summary": "Retrieve a zone by its UUID.",
+                "operationId": "get_app_public_monitored_areas_get_from_uuid",
+                "parameters": [
+                    {
+                        "name": "UUID",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Item",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MonitoredArea"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error"
+                    },
+                    "403": {
+                        "description": "Access denied"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "AssetBeaconTagLinkDTO": {
+                "required": [
+                    "asset_uuid",
+                    "beacon_tag_uuid"
+                ],
+                "properties": {
+                    "asset_uuid": {
+                        "type": "string"
+                    },
+                    "beacon_tag_uuid": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "SearchDTO": {
+                "properties": {
+                    "limit": {
+                        "type": "integer",
+                        "default": 10000,
+                        "maximum": 25000,
+                        "minimum": 1
+                    },
+                    "offset": {
+                        "type": "integer",
+                        "default": 0,
+                        "minimum": 0
+                    },
+                    "order_by": {
+                        "$ref": "#/components/schemas/OrderBy"
+                    },
+                    "sort_by": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "default": null
+                    },
+                    "filters": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/FilterDTO"
+                        },
+                        "default": []
+                    }
+                },
+                "type": "object"
+            },
+            "SearchDTO2": {
+                "properties": {
+                    "limit": {
+                        "type": "integer",
+                        "default": 10000,
+                        "maximum": 25000,
+                        "minimum": 1
+                    },
+                    "offset": {
+                        "type": "integer",
+                        "default": 0,
+                        "minimum": 0
+                    },
+                    "order_by": {
+                        "$ref": "#/components/schemas/OrderBy"
+                    },
+                    "sort_by": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "default": null
+                    },
+                    "filters": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/FilterDTO"
+                        },
+                        "default": []
+                    }
+                },
+                "type": "object"
+            },
+            "AssetBeaconTagLink": {
+                "required": [
+                    "asset",
+                    "createdAt",
+                    "uuid"
+                ],
+                "properties": {
+                    "asset": {
+                        "$ref": "#/components/schemas/Asset"
+                    },
+                    "beaconTag": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/BeaconTag"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "uuid": {
+                        "title": "V4 \"Leach-Salz\" Ex: \"f47ac10b-58cc-4372-a567-0e02b2c3d479\".",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Column": {
+                "required": [
+                    "field",
+                    "name",
+                    "type",
+                    "sortable",
+                    "choices",
+                    "column"
+                ],
+                "properties": {
+                    "field": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "$ref": "#/components/schemas/Type"
+                    },
+                    "sortable": {
+                        "type": "boolean"
+                    },
+                    "choices": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "column": {
+                        "type": "boolean"
+                    },
+                    "objectType": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "Asset": {
+                "required": [
+                    "name",
+                    "assetImages",
+                    "activeAffiliationCount",
+                    "customFieldsList",
+                    "monitoredAreaGroupLinks",
+                    "uuid",
+                    "createdAt"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "barcode": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "assetImages": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AssetImage"
+                        }
+                    },
+                    "affiliable": {
+                        "type": "boolean",
+                        "default": false
+                    },
+                    "expectedAssetAffiliationEnabled": {
+                        "type": "boolean",
+                        "default": false
+                    },
+                    "lastAssetLifeSignDate": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "lastAssetLifeSignType": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "lastBatteryLevel": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "lastLocationUpdatedAt": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "activeAffiliationCount": {
+                        "type": "integer"
+                    },
+                    "lastMonitoredArea": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/AbstractZone"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    "lastMonitoredAreaEntryAt": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "previousMonitoredArea": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/AbstractZone"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    "lastX": {
+                        "type": [
+                            "number",
+                            "null"
+                        ],
+                        "format": "float"
+                    },
+                    "lastY": {
+                        "type": [
+                            "number",
+                            "null"
+                        ],
+                        "format": "float"
+                    },
+                    "lastFloorLevel": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "currentMonitoredArea": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/AbstractZone"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    "distanceTravelled": {
+                        "title": "In kilometers.",
+                        "type": [
+                            "number",
+                            "null"
+                        ],
+                        "format": "float"
+                    },
+                    "user": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/User"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    "assetBeaconTagLinkEnabled": {
+                        "type": [
+                            "boolean",
+                            "null"
+                        ]
+                    },
+                    "trackableDevice": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/TrackableDeviceInterface"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    "assetGroups": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "uuid": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "default": []
+                    },
+                    "customFieldsList": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AssetCustomFieldLink"
+                        }
+                    },
+                    "monitoredAreaGroupLinks": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MonitoredAreaGroupLink"
+                        }
+                    },
+                    "uuid": {
+                        "title": "V4 \"Leach-Salz\" Ex: \"f47ac10b-58cc-4372-a567-0e02b2c3d479\".",
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "createdByUser": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/User"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    "userActionUpdatedAt": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updatedByUser": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/User"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "Asset2": {
+                "required": [
+                    "name",
+                    "customFieldsList"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "barcode": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "assetGroups": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "uuid": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "default": []
+                    },
+                    "customFieldsList": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AssetCustomFieldLink2"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Asset3": {
+                "required": [
+                    "name",
+                    "customFieldsList"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "barcode": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "assetGroups": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "uuid": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "default": []
+                    },
+                    "customFieldsList": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AssetCustomFieldLink3"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "AssetGroup": {
+                "required": [
+                    "name",
+                    "customFieldsList",
+                    "createdAt",
+                    "uuid"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "color": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "customFieldsList": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AssetGroupCustomFieldLink"
+                        }
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "uuid": {
+                        "title": "V4 \"Leach-Salz\" Ex: \"f47ac10b-58cc-4372-a567-0e02b2c3d479\".",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "AssetGroup2": {
+                "required": [
+                    "name",
+                    "customFieldsList"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "customFieldsList": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AssetGroupCustomFieldLink2"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "AssetGroup3": {
+                "required": [
+                    "name",
+                    "customFieldsList"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "customFieldsList": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AssetGroupCustomFieldLink3"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "ImageOverlay": {
+                "required": [
+                    "createdAt",
+                    "imageUrl",
+                    "uuid"
+                ],
+                "properties": {
+                    "opacity": {
+                        "type": "number",
+                        "format": "float",
+                        "default": 0.5
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "imageUrl": {
+                        "type": "string"
+                    },
+                    "points": {
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "type": "number",
+                                "format": "float"
+                            }
+                        },
+                        "default": []
+                    },
+                    "floorLevel": {
+                        "type": "integer",
+                        "default": 0
+                    },
+                    "uuid": {
+                        "title": "V4 \"Leach-Salz\" Ex: \"f47ac10b-58cc-4372-a567-0e02b2c3d479\".",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "BeaconTag": {
+                "required": [
+                    "customer",
+                    "createdAt",
+                    "uuid"
+                ],
+                "properties": {
+                    "name": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "type": {
+                        "type": "string",
+                        "default": "ble"
+                    },
+                    "bleMacAddress": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "devEUI": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "imei": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "iccid": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "serialNumber": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "epc": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "customer": {
+                        "$ref": "#/components/schemas/Customer"
+                    },
+                    "assetBeaconTagLinkEnabled": {
+                        "type": [
+                            "boolean",
+                            "null"
+                        ]
+                    },
+                    "assetLinked": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/Asset"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    "firmware": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/Firmware"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    "lastBatteryLevel": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "lastBatteryPercentage": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "lastBatteryVoltage": {
+                        "type": [
+                            "number",
+                            "null"
+                        ],
+                        "format": "float"
+                    },
+                    "technicalId": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "uuid": {
+                        "title": "V4 \"Leach-Salz\" Ex: \"f47ac10b-58cc-4372-a567-0e02b2c3d479\".",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "User": {
+                "required": [
+                    "emailAddress",
+                    "locale",
+                    "createdAt",
+                    "uuid",
+                    "roles",
+                    "name"
+                ],
+                "properties": {
+                    "emailAddress": {
+                        "type": "string"
+                    },
+                    "firstname": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "lastname": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "avatarImageUrl": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "locale": {
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "uuid": {
+                        "title": "V4 \"Leach-Salz\" Ex: \"f47ac10b-58cc-4372-a567-0e02b2c3d479\".",
+                        "type": "string"
+                    },
+                    "roles": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "MonitoredArea": {
+                "required": [
+                    "name",
+                    "monitoredAreaGroupLinks",
+                    "uuid",
+                    "createdAt"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string",
+                        "default": "points_based"
+                    },
+                    "floorLevel": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ],
+                        "default": 0
+                    },
+                    "monitoredAreaGroupLinks": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MonitoredAreaGroupLink"
+                        }
+                    },
+                    "uuid": {
+                        "title": "V4 \"Leach-Salz\" Ex: \"f47ac10b-58cc-4372-a567-0e02b2c3d479\".",
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "points": {
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "type": "number",
+                                "format": "float"
+                            }
+                        },
+                        "default": []
+                    }
+                },
+                "type": "object"
+            },
+            "OrderBy": {
+                "type": "string",
+                "enum": [
+                    "asc",
+                    "desc"
+                ]
+            },
+            "FilterDTO": {
+                "required": [
+                    "field",
+                    "value"
+                ],
+                "properties": {
+                    "field": {
+                        "type": "string"
+                    },
+                    "value": {
+                        "oneOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "boolean"
+                            },
+                            {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        ]
+                    },
+                    "comparator": {
+                        "$ref": "#/components/schemas/Comparator"
+                    }
+                },
+                "type": "object"
+            },
+            "Type": {
+                "type": "string",
+                "enum": [
+                    "boolean",
+                    "values_list",
+                    "objects_list",
+                    "text",
+                    "date",
+                    "float",
+                    "link"
+                ]
+            },
+            "AssetImage": {
+                "required": [
+                    "createdAt",
+                    "imageUrl",
+                    "uuid"
+                ],
+                "properties": {
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "imageUrl": {
+                        "type": "string"
+                    },
+                    "uuid": {
+                        "title": "V4 \"Leach-Salz\" Ex: \"f47ac10b-58cc-4372-a567-0e02b2c3d479\".",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "AbstractZone": {
+                "required": [
+                    "monitoredAreaGroupLinks",
+                    "uuid"
+                ],
+                "properties": {
+                    "monitoredAreaGroupLinks": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MonitoredAreaGroupLink"
+                        }
+                    },
+                    "uuid": {
+                        "title": "V4 \"Leach-Salz\" Ex: \"f47ac10b-58cc-4372-a567-0e02b2c3d479\".",
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "discriminator": {
+                    "propertyName": "zoneType",
+                    "mapping": {
+                        "asset": "#/components/schemas/Asset",
+                        "monitored_area": "#/components/schemas/MonitoredArea",
+                        "mobile_device": "#/components/schemas/MobileDevice"
+                    }
+                },
+                "oneOf": [
+                    {
+                        "$ref": "#/components/schemas/Asset"
+                    },
+                    {
+                        "$ref": "#/components/schemas/MonitoredArea"
+                    },
+                    {
+                        "$ref": "#/components/schemas/MobileDevice"
+                    }
+                ]
+            },
+            "TrackableDeviceInterface": {
+                "required": [
+                    "type"
+                ],
+                "properties": {
+                    "type": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "AssetCustomFieldLink": {
+                "required": [
+                    "name",
+                    "type"
+                ],
+                "properties": {
+                    "uuid": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "value": {
+                        "oneOf": [
+                            {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
+                            },
+                            {
+                                "type": "boolean"
+                            },
+                            {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            {
+                                "type": "number",
+                                "format": "float"
+                            },
+                            {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "MonitoredAreaGroupLink": {
+                "required": [
+                    "monitoredAreaGroup",
+                    "createdAt",
+                    "uuid"
+                ],
+                "properties": {
+                    "monitoredAreaGroup": {
+                        "$ref": "#/components/schemas/MonitoredAreaGroup"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "uuid": {
+                        "title": "V4 \"Leach-Salz\" Ex: \"f47ac10b-58cc-4372-a567-0e02b2c3d479\".",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "AssetCustomFieldLink2": {
+                "properties": {
+                    "uuid": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "value": {
+                        "oneOf": [
+                            {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
+                            },
+                            {
+                                "type": "boolean"
+                            },
+                            {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            {
+                                "type": "number",
+                                "format": "float"
+                            },
+                            {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "AssetCustomFieldLink3": {
+                "properties": {
+                    "uuid": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "value": {
+                        "oneOf": [
+                            {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
+                            },
+                            {
+                                "type": "boolean"
+                            },
+                            {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            {
+                                "type": "number",
+                                "format": "float"
+                            },
+                            {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "AssetGroupCustomFieldLink": {
+                "required": [
+                    "name",
+                    "type"
+                ],
+                "properties": {
+                    "uuid": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "value": {
+                        "oneOf": [
+                            {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
+                            },
+                            {
+                                "type": "boolean"
+                            },
+                            {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            {
+                                "type": "number",
+                                "format": "float"
+                            },
+                            {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "AssetGroupCustomFieldLink2": {
+                "properties": {
+                    "uuid": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "value": {
+                        "oneOf": [
+                            {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
+                            },
+                            {
+                                "type": "boolean"
+                            },
+                            {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            {
+                                "type": "number",
+                                "format": "float"
+                            },
+                            {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "AssetGroupCustomFieldLink3": {
+                "properties": {
+                    "uuid": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "value": {
+                        "oneOf": [
+                            {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
+                            },
+                            {
+                                "type": "boolean"
+                            },
+                            {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            {
+                                "type": "number",
+                                "format": "float"
+                            },
+                            {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "Customer": {
+                "required": [
+                    "createdAt",
+                    "uuid"
+                ],
+                "properties": {
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "uuid": {
+                        "title": "V4 \"Leach-Salz\" Ex: \"f47ac10b-58cc-4372-a567-0e02b2c3d479\".",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Firmware": {
+                "required": [
+                    "firmwareVersion",
+                    "downlinkVersions",
+                    "deviceType",
+                    "createdAt",
+                    "uuid"
+                ],
+                "properties": {
+                    "firmwareVersion": {
+                        "type": "integer"
+                    },
+                    "downlinkVersions": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "deviceType": {
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "uuid": {
+                        "title": "V4 \"Leach-Salz\" Ex: \"f47ac10b-58cc-4372-a567-0e02b2c3d479\".",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Comparator": {
+                "type": "string",
+                "enum": [
+                    "lte",
+                    "gte",
+                    "eq"
+                ]
+            },
+            "MobileDevice": {
+                "required": [
+                    "uuid",
+                    "name",
+                    "monitoredAreaGroupLinks",
+                    "createdAt",
+                    "type"
+                ],
+                "properties": {
+                    "uuid": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "scanner": {
+                        "type": "boolean",
+                        "default": false
+                    },
+                    "monitoredAreaGroupLinks": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MonitoredAreaGroupLink"
+                        }
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "type": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "MonitoredAreaGroup": {
+                "required": [
+                    "name",
+                    "createdAt",
+                    "uuid"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "color": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "uuid": {
+                        "title": "V4 \"Leach-Salz\" Ex: \"f47ac10b-58cc-4372-a567-0e02b2c3d479\".",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearer_token": {
+                "type": "http",
+                "description": "Your authorization token",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "security": [
+        {
+            "bearer_token": []
+        }
+    ]
+}
